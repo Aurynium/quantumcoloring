@@ -22,6 +22,9 @@ Usage:
 
 For an arbitrary graph, the format is an adjacency dictionary.
 
+## Example Output
+![`python3 colorsN.py 2 graphs/5-2.txt`](images/example.png "Example Output")
+
 ## Sources:
 - [Python documentation](https://www.python.org/doc/)
 - [Qiskit documentation](https://qiskit.org/)
