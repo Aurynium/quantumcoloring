@@ -1,18 +1,19 @@
 #!/usr/bin/python
 
 # number of bits for colour count. i.e. number of colors = 2**n
-n = 2 # color bits
+n = 2 # color bits (default=2)
 
 # read and parse the graph file. same adjacency dictionary format
 import os.path, sys
-if len(sys.argv) > 1:
-        if os.path.isfile(sys.argv[1]):
-                graph_file = sys.argv[1]
-        else:
-                print(f'"{sys.argv[1]}" is not a file')
+if len(sys.argv) > 2:
+	if os.path.isfile(sys.argv[2]):
+		graph_file = sys.argv[2]
+		n = int(sys.argv[1])
+	else:
+                print(f'"{sys.argv[2]}" is not a file')
                 exit(1)
 else:
-        print(f'Usage: {sys.argv[0]} <graph file>')
+        print(f'Usage: {sys.argv[0]} <N> <graph file>')
         exit(0)
 graph = {k: vs.split() for l in open(graph_file, 'rt').readlines() for (k, vs) in [l.strip().split(None, 1)]}
 
@@ -40,29 +41,28 @@ from qiskit.circuit.library.phase_oracle import PhaseOracle
 from qiskit.exceptions import MissingOptionalLibraryError
 from qiskit.primitives import Sampler
 
-# create actual quantum stuff
-oracle = PhaseOracle(expression)
-print('oracle generated:', oracle)
+try:
+#	create actual quantum stuff
+	oracle = PhaseOracle(expression)
+	print('oracle generated:', oracle)
 
-problem = AmplificationProblem(oracle, is_good_state=oracle.evaluate_bitstring)
-print('problem generated:', problem)
+	problem = AmplificationProblem(oracle, is_good_state=oracle.evaluate_bitstring)
+	print('problem generated:', problem)
 
-grover = Grover(sampler=Sampler())
-print('grover sampler created:', grover)
+	grover = Grover(sampler=Sampler())
+	print('grover sampler created:', grover)
 
-results = grover.amplify(problem)
+	results = grover.amplify(problem)
 
-# qiskit uses RTL for indexing (...3, 2, 1, 0)
-result = results.top_measurement[::-1].zfill(2 ** n)
-print(result)
+#	qiskit moment:
+#	 1. RTL for indexing (...3, 2, 1, 0)
+#	 2. some number->binary conversion that doesn't preserve leading zeros
+	result = results.top_measurement[::-1].zfill(2 ** n)
+	print(result)
 
-# explain result
-colors = {
-	'00': 'black',
-	'01': 'white',
-	'10': 'red',
-	'11': 'blue',
-}
-for i, v in enumerate(list(graph.keys())):
-	v_result = result[i * (2**(n-1)) : i * (2**(n-1)) + (2**(n-1))]
-	print(v, v_result, colors[v_result])
+#	explain result
+	for i, v in enumerate(list(graph.keys())):
+		v_result = result[i * (2**(n-1)) : i * (2**(n-1)) + (2**(n-1))]
+		print(v, v_result)
+except TypeError:
+	print('no solution could be found')
