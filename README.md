@@ -3,3 +3,6 @@ it uses graph.txt as its input
 
 to enter an arbitrary graph, change the graph.txt file to a different graph in the form of an adjacency list
 
+Sources:
+Python documentation
+Qiskit documentation
