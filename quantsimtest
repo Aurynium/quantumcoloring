@@ -1,0 +1,17 @@
+from qiskit import QuantumCircuit, Aer, transpile
+from qiskit.tools.visualization import plot_histogram, plot_state_city
+import qiskit.quantum_info as qi
+
+qc = QuantumCircuit(2)
+qc.h(0)
+qc.cx(0, 1)
+qc.measure_all()
+
+sim = Aer.get_backend('aer_simulator')
+qc = transpile(qc, sim)
+
+result = sim.run(qc, shots=1000).result()
+counts = result.get_counts(qc)
+plot_histogram(counts)
+
+print(counts)

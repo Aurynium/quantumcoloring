@@ -1,0 +1,8 @@
+from qiskit import QuantumCircuit, assemble, Aer
+from qiskit.visualization import plot_histogram
+
+qc = QuantumCircuit(2,2)
+
+qc.cx(0,1)
+
+print(qc)

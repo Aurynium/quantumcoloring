@@ -1,0 +1,49 @@
+from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+from qiskit.transpiler import PassManager
+from qiskit.transpiler.passes import Unroller
+
+# change this >:^D
+connections = {
+    0: [1,2],
+    1: [0,3],
+    2: [0,3],
+    3: [1,2,4,5],
+    4: [3,6],
+    5: [3,6],
+    6: [4,5],
+}
+
+# diffusion gate
+qb = QuantumRegister(len(connections), name='tile')
+qc = QuantumCircuit(qb, name='diffusion')
+qc.h(qb)
+qc.x(qb)
+qc.h(qb[-1])
+qc.mct(qb[0:-1], qb[-1])
+qc.h(qb[-1])
+qc.x(qb)
+qc.h(qb)
+# print(qc.draw(output='text'))
+diffuser = qc.to_gate()
+del qc, qb
+# end diffusion gate
+
+# flip gate
+qbt = QuantumRegister(len(connections), name='tile')
+qbf = QuantumRegister(len(connections), name='flip')
+qc = QuantumCircuit(qbt, qbf, name='flipper')
+for (country, connected_to) in connections.items():
+    # print(f'{country} -> {connected_to}')
+    qc.cx(qbf[country], qbt[connected_to])
+print(qc.draw(output='text'))
+flipper = qc.to_gate()
+del qc, qbt, qbf
+# end flip gate
+
+# oracle gate
+qb = QuantumRegister(9, name='tile')
+qs = QuantumRegister(9, name='flip')
+oracle = QuantumRegister(1, name='oracle')
+qc = QuantumCircuit(qb, qs, oracle, name='oracle')
+del qb, qs, qc, oracle
+# end oracle gate
