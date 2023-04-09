@@ -1,12 +1,11 @@
-- quantumcoloring.py is the main script
+## Files
+- `quantumcoloring.py` - main script
+- `graph.txt` - input file
 
-graph.txt is the input file
+## How to use:
+To enter an arbitrary graph, change the `graph.txt`. The format is an adjacency dictionary.
 
-to enter an arbitrary graph, change the graph.txt file to a different graph in the form of an adjacency list
 
-
-Sources:
-
-Python documentation
-
-Qiskit documentation
+## Sources:
+- [Python documentation](https://www.python.org/doc/)
+- [Qiskit documentation](https://qiskit.org/)
