@@ -22,11 +22,21 @@
 # Each bit corresponds to the color of the country. (1=white, 0=black)
 
 # Adjacency list representation of the graph of countries
-from re import A, I
 
 # Import the graph
+import os.path, sys
+if len(sys.argv) > 1:
+	if os.path.isfile(sys.argv[1]):
+		graph_file = sys.argv[1]
+	else:
+		print(f'"{sys.argv[1]}" is not a file')
+		exit(1)
+else:
+	print(f'Usage: {sys.argv[0]} <graph file>')
+	exit(0)
+
 graph = {}
-with open('graph.txt', 'rt') as f:
+with open(graph_file, 'rt') as f:
     for l in f.readlines():
         ls = l.strip().split(None, 1)
         graph[ls[0]] = ls[1].split()
