@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# number of bits for colour count. i.e. number of colors = 2**n
+n = 2 # color bits
+
 # read and parse the graph file. same adjacency dictionary format
 import os.path, sys
 if len(sys.argv) > 1:
@@ -15,18 +18,21 @@ graph = {k: vs.split() for l in open(graph_file, 'rt').readlines() for (k, vs) i
 
 # trivially satisfiable expression, just forces the ordering in the result qubit measurements
 # TODO: don't do this, it is stupid. find a better way to determine variable->index map
-expression_orderer = ' | '.join([f'{v}1 | {v}2' for v in graph.keys()])
+expression_orderer = ' | '.join([
+	f'{v}{i+1}' for v in graph.keys() for i in range(0,n)
+])
 
 # actual heap of the work
-expression_logic   = ' & '.join([f'(({k}1 ^ {v}1) | ({k}2 ^ {v}2))' for k, vs in graph.items() for v in vs])
+expression_logic   = ' & '.join([
+	'(' + ' | '.join([
+		f'({k}{i+1} ^ {v}{i+1})' for i in range(0,n)
+	]) + ')' for k, vs in graph.items() for v in vs
+])
 
 # join the expressions. ensure the orderer comes first.
 expression = f'({expression_orderer}) & {expression_logic}'
 
 print(graph); print(expression)
-
-# number of bits for colour count. i.e. number of colors = 2**n
-n = 2 # color bits
 
 # import preamble for qiskit
 from qiskit.algorithms import Grover, AmplificationProblem
