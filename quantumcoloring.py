@@ -31,10 +31,10 @@ with open('graph.txt', 'rt') as f:
         ls = l.strip().split(None, 1)
         graph[ls[0]] = ls[1].split()
 
-# Initialize a queue variable q, an empty string variable str,
+# Initialize a queue variable q, an empty string variable expr,
 # an integer variable counter, and an empty array traversed
 q = []
-str = ''
+expr = ''
 boolOrder = ''
 counter = 0
 traversed = []
@@ -65,12 +65,12 @@ while q:
 
     # If the group is an odd-numbered group (0-indexed), add a negation symbol to the string
     if(counter & 1):
-        str += '~'
+        expr += '~'
     
     # Add the element and an ampersand to the string
-    str += m
+    expr += m
     boolOrder += m
-    str += ' & '
+    expr += ' & '
 
     # Add the element to the traversed list
     traversed.append(m)
@@ -82,7 +82,7 @@ while q:
 
 # Remove the three excess characters from the string, and initialize
 # the string expression to the substring
-expression = str[0:len(str)-3]
+expression = expr[0:len(expr)-3]
 
 # Print the boolean expression (debugging)
 print(expression)
@@ -106,13 +106,13 @@ grover = Grover(sampler=Sampler())
 result = grover.amplify(problem)
 
 # Store the measurement with the highest probability into a string
-str = result.top_measurement
+expr = result.top_measurement
 
 # Reverse the string
-str = str[::-1]
+expr = expr[::-1]
 
 # Print the bit string to the console
-print(str)
+print(expr)
 
 # Give each vertex in the graph a color according to the bit string
 colors = {
@@ -122,4 +122,4 @@ colors = {
 
 # Print vertices with corresponding colors
 for i, v in enumerate(list(boolOrder)):
-    print(f'{v}: {colors[str[i]]}')
+    print(f'{v}: {colors[expr[i]]}')
