@@ -11,12 +11,14 @@ After, a quantum computer calculates the solutions to the boolean system.
 In the current case, the number of colours is n=2.
 
 ## Files
-- `quantumcoloring.py` - main script
-- `graph.txt` - input file
+- `colors2.py` - main script
+- `graphs/*.txt` - example input files
 
 ## How to use:
-To enter an arbitrary graph, change the `graph.txt`. The format is an adjacency dictionary.
+Usage:
+- `python3 colors2.py <graph file>`
 
+For an arbitrary graph, the format is an adjacency dictionary.
 
 ## Sources:
 - [Python documentation](https://www.python.org/doc/)
