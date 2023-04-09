@@ -6,7 +6,7 @@
 # Wilson Smith (Red)
 # Matthew Yu (Red)
 #
-# This program takes an input of N countries with 
+# This program takes an input of N countries with
 # one or more borders with countries in the form of a
 # graph. Borders are listed as an adjacency dictionary.
 #
@@ -15,10 +15,10 @@
 # The first country is bordered by the rest of the countries in the list.
 # The program does not check for invalid graphs, so please don't input one... it'll probably break. :(
 #
-# The program parses the graph and stores the resulting colouring system as a boolean expression. 
+# The program parses the graph and stores the resulting colouring system as a boolean expression.
 # It is then used to create an oracle which is passed to Grover's algorithm.
 #
-# The result with highest probability is printed as a binary string. 
+# The result with highest probability is printed as a binary string.
 # Each bit corresponds to the color of the country. (1=white, 0=black)
 
 # Adjacency list representation of the graph of countries
@@ -37,9 +37,9 @@ else:
 
 graph = {}
 with open(graph_file, 'rt') as f:
-    for l in f.readlines():
-        ls = l.strip().split(None, 1)
-        graph[ls[0]] = ls[1].split()
+	for l in f.readlines():
+		ls = l.strip().split(None, 1)
+		graph[ls[0]] = ls[1].split()
 
 # Initialize a queue variable q, an empty string variable expr,
 # an integer variable counter, and an empty array traversed
@@ -57,38 +57,38 @@ q.append('-1')
 # While elements are still present in the queue
 while q:
 
-    # Pop the first element from the queue
-    m = q.pop(0)
+	# Pop the first element from the queue
+	m = q.pop(0)
 
-    # If the element was already processed, go back to start of loop
-    if(m in traversed):
-        continue
+	# If the element was already processed, go back to start of loop
+	if(m in traversed):
+		continue
 
-    # If the element is -1, then check if all the elements were already processed
-    # Either exit the loop or append another -1 to signify the start of the next group
-    if(m == '-1'):
-        if(len(q) == 0):
-            break
-        counter += 1
-        q.append('-1')
-        continue
+	# If the element is -1, then check if all the elements were already processed
+	# Either exit the loop or append another -1 to signify the start of the next group
+	if(m == '-1'):
+		if(len(q) == 0):
+			break
+		counter += 1
+		q.append('-1')
+		continue
 
-    # If the group is an odd-numbered group (0-indexed), add a negation symbol to the string
-    if(counter & 1):
-        expr += '~'
-    
-    # Add the element and an ampersand to the string
-    expr += m
-    boolOrder += m
-    expr += ' & '
+	# If the group is an odd-numbered group (0-indexed), add a negation symbol to the string
+	if(counter & 1):
+		expr += '~'
 
-    # Add the element to the traversed list
-    traversed.append(m)
+	# Add the element and an ampersand to the string
+	expr += m
+	boolOrder += m
+	expr += ' & '
 
-    # Add the neighbors of the element to the queue
-    for neighbour in graph[m]:
-        if neighbour not in traversed and neighbour not in q:
-            q.append(neighbour)
+	# Add the element to the traversed list
+	traversed.append(m)
+
+	# Add the neighbors of the element to the queue
+	for neighbour in graph[m]:
+		if neighbour not in traversed and neighbour not in q:
+			q.append(neighbour)
 
 # Remove the three excess characters from the string, and initialize
 # the string expression to the substring
@@ -126,10 +126,10 @@ print(expr)
 
 # Give each vertex in the graph a color according to the bit string
 colors = {
-    '0': 'black',
-    '1': 'white',
+	'0': 'black',
+	'1': 'white',
 }
 
 # Print vertices with corresponding colors
 for i, v in enumerate(list(boolOrder)):
-    print(f'{v}: {colors[expr[i]]}')
+	print(f'{v}: {colors[expr[i]]}')

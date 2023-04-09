@@ -10,11 +10,11 @@ if len(sys.argv) > 2:
 		graph_file = sys.argv[2]
 		n = int(sys.argv[1])
 	else:
-                print(f'"{sys.argv[2]}" is not a file')
-                exit(1)
+				print(f'"{sys.argv[2]}" is not a file')
+				exit(1)
 else:
-        print(f'Usage: {sys.argv[0]} <N> <graph file>')
-        exit(0)
+		print(f'Usage: {sys.argv[0]} <N> <graph file>')
+		exit(0)
 graph = {k: vs.split() for l in open(graph_file, 'rt').readlines() for (k, vs) in [l.strip().split(None, 1)]}
 
 # trivially satisfiable expression, just forces the ordering in the result qubit measurements
